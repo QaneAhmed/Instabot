@@ -8,9 +8,10 @@ const isPublicRoute = createRouteMatcher([
   "/api/meta/oauth/callback",
 ]);
 
-export default clerkMiddleware((auth, req) => {
+export default clerkMiddleware(async (auth, req) => {
   if (!isPublicRoute(req)) {
-    auth().protect();
+    const session = await auth();
+    session.protect();
   }
 });
 
