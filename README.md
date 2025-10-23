@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## AI DM CRM Manager (MVP Scaffold)
 
-## Getting Started
+Production-ready scaffold for an Instagram-only DM CRM powered by Next.js 16, Clerk, Convex, OpenAI, and the Instagram Graph API.
 
-First, run the development server:
+### Stack
+
+- Next.js App Router with Tailwind CSS
+- Clerk authentication + middleware
+- Convex backend schema, actions, queries, and cron jobs (stubbed)
+- OpenAI SDK integration helper
+- Meta OAuth + webhook API route placeholders
+
+### Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Configure the following environment variables before running the full flow:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`
+- `NEXT_PUBLIC_CONVEX_URL`, `CONVEX_DEPLOYMENT`
+- `OPENAI_API_KEY`, `TOKEN_SECRET`
+- `META_APP_ID`, `META_APP_SECRET`, `META_VERIFY_TOKEN`, `META_OAUTH_REDIRECT_URI`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Next steps
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Run `npx convex dev` to generate `_generated` files and connect to your Convex deployment.
+2. Implement the TODOs in Convex actions/mutations/queries to handle real data.
+3. Wire the inbox UI to Convex hooks (`useQuery`, `useMutation`, `useAction`).
+4. Complete the Meta OAuth callback by calling Convex actions and persisting tokens.
+5. Replace placeholder data in the inbox and follow-ups UI with live queries.
