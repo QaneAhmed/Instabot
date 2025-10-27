@@ -14,30 +14,30 @@ export default clerkMiddleware(async (auth, req) => {
   const isPublic = PUBLIC_ROUTE_PATTERNS.some((regex) => regex.test(pathname));
 
   if (isPublic) {
-    if (process.env.NODE_ENV !== "production") {
-      console.info("[middleware] allowing public route", { pathname });
-    }
+    console.info("[middleware] allowing public route", { pathname });
     return;
   }
 
   const authResult = await auth();
 
-  if (process.env.NODE_ENV !== "production") {
-    console.info("[middleware] resolved auth", {
-      pathname,
-      userId: authResult.userId,
-      hasSession: Boolean(authResult.sessionId),
-    });
-  }
+  console.info("[middleware] resolved auth", {
+    pathname,
+    userId: authResult.userId,
+    hasSession: Boolean(authResult.sessionId),
+    sessionId: authResult.sessionId,
+    orgRole: authResult.orgRole,
+  });
 
   const { userId } = authResult;
 
   if (!userId) {
-    if (process.env.NODE_ENV !== "production") {
-      console.warn("[middleware] unauthenticated access, redirecting to sign-in", {
-        pathname,
-      });
-    }
+    console.warn("[middleware] unauthenticated access, redirecting to sign-in", {
+      pathname,
+      search: req.nextUrl.search,
+      method: req.method,
+      geo: req.geo,
+      headers: Object.fromEntries(req.headers.entries()),
+    });
 
     const signInUrl = new URL("/sign-in", req.nextUrl.origin);
     signInUrl.searchParams.set("redirect_url", req.nextUrl.href);
