@@ -35,7 +35,7 @@ export default clerkMiddleware(async (auth, req) => {
       pathname,
       search: req.nextUrl.search,
       method: req.method,
-      geo: req.geo,
+      ip: req.ip,
       headers: Object.fromEntries(req.headers.entries()),
     });
 
