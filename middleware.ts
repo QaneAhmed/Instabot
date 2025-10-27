@@ -1,10 +1,27 @@
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+import { clerkMiddleware } from "@clerk/nextjs/server";
 
-export function middleware(_req: NextRequest) {
-  // TODO: Replace with Clerk middleware once Clerk environment is configured.
-  return NextResponse.next();
-}
+const PUBLIC_ROUTE_PATTERNS = [
+  /^\/?$/,
+  /^\/sign-in(\/.*)?$/,
+  /^\/sign-up(\/.*)?$/,
+  /^\/api\/meta\/webhook$/,
+  /^\/api\/meta\/oauth\/callback$/,
+];
+
+export default clerkMiddleware((auth, req) => {
+  const pathname = req.nextUrl.pathname;
+  const isPublic = PUBLIC_ROUTE_PATTERNS.some((regex) => regex.test(pathname));
+
+  if (isPublic) {
+    return;
+  }
+
+  const authState = auth();
+
+  if (!authState.userId) {
+    return authState.redirectToSignIn();
+  }
+});
 
 export const config = {
   matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
