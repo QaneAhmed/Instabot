@@ -5,7 +5,7 @@ Production-ready scaffold for an Instagram-only DM CRM powered by Next.js 16, Cl
 ### Stack
 
 - Next.js App Router with Tailwind CSS
-- Clerk authentication + middleware
+- Clerk authentication wiring (middleware currently stubbed until credentials provided)
 - Convex backend schema, actions, queries, and cron jobs (stubbed)
 - OpenAI SDK integration helper
 - Meta OAuth + webhook API route placeholders
