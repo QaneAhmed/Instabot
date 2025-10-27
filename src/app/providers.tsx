@@ -30,6 +30,10 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   const client = useConvexClient();
   const content = useMemo(() => children, [children]);
 
+  if (!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+    return <>{content}</>;
+  }
+
   if (!client) {
     return <ClerkProvider>{content}</ClerkProvider>;
   }
