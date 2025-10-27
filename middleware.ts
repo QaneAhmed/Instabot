@@ -8,7 +8,7 @@ const PUBLIC_ROUTE_PATTERNS = [
   /^\/api\/meta\/oauth\/callback$/,
 ];
 
-export default clerkMiddleware((auth, req) => {
+export default clerkMiddleware(async (auth, req) => {
   const pathname = req.nextUrl.pathname;
   const isPublic = PUBLIC_ROUTE_PATTERNS.some((regex) => regex.test(pathname));
 
@@ -16,7 +16,11 @@ export default clerkMiddleware((auth, req) => {
     return;
   }
 
-  return auth().protect();
+  const { userId } = await auth();
+
+  if (!userId) {
+    return auth().redirectToSignIn();
+  }
 });
 
 export const config = {
