@@ -38,15 +38,31 @@ export const verifyMetaSignature = async (req: NextRequest) => {
   const signature = req.headers.get("x-hub-signature-256");
 
   if (!appSecret || !signature) {
+    console.warn(
+      "[meta] Missing app secret or signature header during webhook verification",
+      { hasAppSecret: Boolean(appSecret), hasSignature: Boolean(signature) },
+    );
     return false;
   }
 
+  const payloadBuffer = Buffer.from(await req.clone().arrayBuffer());
   const digest = crypto
     .createHmac("sha256", appSecret)
-    .update(await req.clone().arrayBuffer())
+    .update(payloadBuffer)
     .digest("hex");
 
-  return `sha256=${digest}` === signature;
+  const expected = `sha256=${digest}`;
+  const isValid = expected === signature;
+
+  if (!isValid) {
+    console.warn("[meta] Invalid webhook signature", {
+      expectedPrefix: expected.slice(0, 12),
+      receivedPrefix: signature.slice(0, 12),
+      payloadBytes: payloadBuffer.byteLength,
+    });
+  }
+
+  return isValid;
 };
 
 export const metaFetch = async (
