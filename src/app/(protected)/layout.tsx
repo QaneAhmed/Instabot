@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import Link from "next/link";
+import { WorkspaceGate } from "@/components/workspace/WorkspaceGate";
 
 export default function ProtectedLayout({ children }: { children: ReactNode }) {
   return (
@@ -14,7 +15,9 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
           <Link href="/settings">Settings</Link>
         </div>
       </nav>
-      <main className="mx-auto w-full max-w-6xl flex-1 pb-12">{children}</main>
+      <main className="mx-auto w-full max-w-6xl flex-1 pb-12">
+        <WorkspaceGate>{children}</WorkspaceGate>
+      </main>
     </div>
   );
 }

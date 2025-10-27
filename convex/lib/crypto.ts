@@ -1,3 +1,5 @@
+"use node";
+
 import { createDecipheriv, createCipheriv, randomBytes } from "node:crypto";
 
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
