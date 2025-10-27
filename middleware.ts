@@ -1,4 +1,5 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
 const PUBLIC_ROUTE_PATTERNS = [
   /^\/?$/,
@@ -38,7 +39,10 @@ export default clerkMiddleware(async (auth, req) => {
       });
     }
 
-    return authResult.redirectToSignIn();
+    const signInUrl = new URL("/sign-in", req.nextUrl.origin);
+    signInUrl.searchParams.set("redirect_url", req.nextUrl.href);
+
+    return NextResponse.redirect(signInUrl);
   }
 });
 
