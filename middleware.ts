@@ -10,6 +10,13 @@ const PUBLIC_ROUTE_PATTERNS = [
 ];
 
 export default clerkMiddleware(async (auth, req) => {
+  if (process.env.BYPASS_CLERK === "true") {
+    console.info("[middleware] BYPASS_CLERK enabled – allowing all traffic", {
+      pathname: req.nextUrl.pathname,
+    });
+    return;
+  }
+
   const pathname = req.nextUrl.pathname;
   const isPublic = PUBLIC_ROUTE_PATTERNS.some((regex) => regex.test(pathname));
 

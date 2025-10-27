@@ -6,6 +6,7 @@ Production-ready scaffold for an Instagram-only DM CRM powered by Next.js 16, Cl
 
 - Next.js App Router with Tailwind CSS
 - Clerk authentication with middleware guards
+  - Set `BYPASS_CLERK=true` to temporarily disable auth while backend wiring is incomplete.
 - Convex backend schema, actions, queries, and cron jobs (stubbed)
 - OpenAI SDK integration helper
 - Meta OAuth + webhook API route placeholders
